@@ -1,0 +1,15 @@
+th .current {
+  padding-right: 20px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+th .current.asc:after {
+  content: "▲";
+  margin-left: 5px;
+}
+
+th .current.desc:after {
+  content: "▼";
+  margin-left: 5px;
+} 

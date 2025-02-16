@@ -1,0 +1,23 @@
+<%= form_with(url: url, method: method, local: true) do |form| %>
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <%= form.text_field :name, value: employee&.dig("name"), class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <label for="position" class="form-label">Position</label>
+    <%= form.text_field :position, value: employee&.dig("position"), class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <label for="salary" class="form-label">Salary</label>
+    <%= form.number_field :salary, value: employee&.dig("salary"), class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <label for="date_of_birth" class="form-label">Date of Birth</label>
+    <%= form.date_field :date_of_birth, value: employee&.dig("date_of_birth"), class: 'form-control' %>
+  </div>
+
+  <%= form.submit "Submit", class: 'btn btn-primary' %>
+<% end %>
