@@ -1,4 +1,3 @@
-require 'csv'
 class BlogsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_blog, only: %i[ show edit update destroy ]
@@ -63,18 +62,26 @@ class BlogsController < ApplicationController
 
   def import
     file = params[:attachment]
-    data = CSV.parse(file.to_io, headers: true, encoding: 'utf8')
-    # Start code to handle CSV data
-    ActiveRecord::Base.transaction do
-      data.each do |row|
-        current_user.blogs.create!(row.to_h)
-      end
+    if file.present?
+      file_path = save_uploaded_file(file)
+      ImportBlogsWorker.perform_async(file_path, current_user.id)
+      redirect_to blogs_path, notice: "Blog import has started. Refresh in a while to check results."
+    else
+      redirect_to blogs_path, alert: "Please upload a valid CSV file."
     end
-    # End code to handle CSV data
-    redirect_to blogs_path
   end
 
   private
+
+    def save_uploaded_file(file)
+      dir = Rails.root.join("tmp", "uploads")
+      FileUtils.mkdir_p(dir) unless Dir.exist?(dir) # Ensure the directory exists
+    
+      file_path = dir.join(SecureRandom.hex + ".csv")
+      File.open(file_path, "wb") { |f| f.write(file.read) } # Save file contents
+      file_path.to_s
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_blog
       @blog = current_user.blogs.find(params[:id])
