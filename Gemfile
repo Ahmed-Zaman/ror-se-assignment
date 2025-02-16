@@ -81,3 +81,4 @@ group :test do
 end
 gem 'devise'
 gem 'pagy'
+gem "sidekiq", "~> 7.3"
