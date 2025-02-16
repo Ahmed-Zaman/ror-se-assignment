@@ -1,6 +1,6 @@
 class EmployeeService
-    def initialize(adapter: EmployeeApiAdapter.new)
-      @adapter = adapter
+    def initialize
+      @adapter = EmployeeApiAdapter.new
     end
   
     def list_employees(page = nil)

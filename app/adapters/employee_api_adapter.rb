@@ -9,7 +9,7 @@ class EmployeeApiAdapter
   end
 
   def fetch_employees(page = nil)
-    uri = page ? URI("#{BASE_URL}?page=#{page}") : URI(BASE_URL)
+    uri = page ? URI("#{BASE_URL}?page=#{page}") : URI(BASE_URL)   
     response = Net::HTTP.get(uri)
     JSON.parse(response)
   end

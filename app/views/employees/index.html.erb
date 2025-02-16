@@ -1,35 +1,45 @@
 <div class="container">
   <h1>Employees</h1>
 
-  <table class="table">
-    <thead>
+  <table class="table table-striped table-hover">
+    <thead class="table-light">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Salary</th>
-        <th scope="col">Position</th>
-        <th scope="col">Date Of Birth</th>
+        <th scope="col"><%= sortable "id", "#" %></th>
+        <th scope="col"><%= sortable "name" %></th>
+        <th scope="col"><%= sortable "salary" %></th>
+        <th scope="col"><%= sortable "position" %></th>
+        <th scope="col"><%= sortable "date_of_birth", "Date Of Birth" %></th>
         <th colspan="2" scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @employees.dig("data").each do |e| %>
-      <tr>
-        <th scope="row"><%= e.dig("id") %></th>
-        <td><%= e.dig("name") %></td>
-        <td><%= e.dig("salary") %></td>
-        <td><%= e.dig("position") %></td>
-        <td><%= e.dig("date_of_birth") %></td>
-        <td><%= link_to 'Edit', edit_employee_path(e["id"]) %> </td>
-        <td><%= link_to 'Show', employee_path(e["id"]) %> </td>
-  
-      </tr>
+        <tr>
+          <th scope="row"><%= e.dig("id") %></th>
+          <td><%= e.dig("name") %></td>
+          <td><%= e.dig("salary") %></td>
+          <td><%= e.dig("position") %></td>
+          <td><%= e.dig("date_of_birth") %></td>
+          <td>
+            <%= link_to 'Edit', edit_employee_path(e["id"]), class: 'btn btn-sm btn-primary' %>
+            <%= link_to 'Show', employee_path(e["id"]), class: 'btn btn-sm btn-info' %>
+          </td>
+        </tr>
       <% end %>
     </tbody>
   </table>
 
-  <%= link_to 'First Page', employees_path(page: 1) %> |
-  <%= link_to 'Next Page', employees_path(page: @employees.dig("meta","next_page")) %> |
-  <%= link_to 'Previous Page', employees_path(page: @employees.dig("meta","prev_page")) %> |
-  <%= link_to 'Last Page', employees_path(page: @employees.dig("meta","total_pages")) %>
+  <div class="pagination mt-3">
+    <%= link_to 'First', employees_path(page: 1, sort: params[:sort], direction: params[:direction]), 
+        class: "btn btn-outline-primary mx-1 #{@employees.dig('meta','current_page') == 1 ? 'disabled' : ''}" %>
+    
+    <%= link_to 'Previous', employees_path(page: @employees.dig('meta','prev_page'), sort: params[:sort], direction: params[:direction]), 
+        class: "btn btn-outline-primary mx-1 #{@employees.dig('meta','prev_page').nil? ? 'disabled' : ''}" %>
+    
+    <%= link_to 'Next', employees_path(page: @employees.dig('meta','next_page'), sort: params[:sort], direction: params[:direction]), 
+        class: "btn btn-outline-primary mx-1 #{@employees.dig('meta','next_page').nil? ? 'disabled' : ''}" %>
+    
+    <%= link_to 'Last', employees_path(page: @employees.dig('meta','total_pages'), sort: params[:sort], direction: params[:direction]), 
+        class: "btn btn-outline-primary mx-1 #{@employees.dig('meta','current_page') == @employees.dig('meta','total_pages') ? 'disabled' : ''}" %>
+  </div>
 </div>
