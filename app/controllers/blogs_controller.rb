@@ -22,29 +22,23 @@ class BlogsController < ApplicationController
 
   # POST /blogs or /blogs.json
   def create
-    @blog = current_user.blogs.new(blog_params)
+    @blog = current_user.blogs.build(blog_params)
 
-    respond_to do |format|
-      if @blog.save
-        format.html { redirect_to blog_url(@blog), notice: "Blog was successfully created." }
-        format.json { render :show, status: :created, location: @blog }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @blog.errors, status: :unprocessable_entity }
-      end
+    if @blog.save
+      redirect_to @blog, notice: 'Blog was successfully created.'
+    else
+      flash.now[:alert] = 'There was an error creating the blog.'
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /blogs/1 or /blogs/1.json
   def update
-    respond_to do |format|
-      if @blog.update(blog_params)
-        format.html { redirect_to blog_url(@blog), notice: "Blog was successfully updated." }
-        format.json { render :show, status: :ok, location: @blog }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @blog.errors, status: :unprocessable_entity }
-      end
+    if @blog.update(blog_params)
+      redirect_to @blog, notice: 'Blog was successfully updated.'
+    else
+      flash.now[:alert] = 'There was an error updating the blog.'
+      render :edit, status: :unprocessable_entity
     end
   end
 

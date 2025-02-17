@@ -1,7 +1,10 @@
 <div class="container">
   <h1>New Employee</h1>
   
-  <%= render 'form', url: employees_path, method: :post, employee: nil %>
+  <%= render 'form', 
+             employee: @employee,
+             url: employees_path,
+             method: :post %>
 
-  <%= link_to "Back", employees_path, class: 'mt-3 d-inline-block' %>
+  <%= link_to 'Back to Employees', employees_path, class: 'btn btn-secondary mt-3' %>
 </div>

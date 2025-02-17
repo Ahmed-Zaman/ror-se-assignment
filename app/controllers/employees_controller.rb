@@ -15,30 +15,28 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    employee_params = {
-      name: params[:name],
-      position: params[:position],
-      date_of_birth: params[:date_of_birth],
-      salary: params[:salary]
-    }
-    @employee = @employee_service.create_employee(employee_params)
-    redirect_to employee_path(@employee.dig('id'))
+    @employee = @employee_service.create_employee(employee_params.to_h)
+    redirect_to employees_path, notice: 'Employee was successfully created.'
+  rescue StandardError => e
+    flash.now[:alert] = e.message
+    render :new
   end
 
   def update
-    employee_params = {
-      name: params[:name],
-      position: params[:position],
-      date_of_birth: params[:date_of_birth],
-      salary: params[:salary]
-    }
-    @employee = @employee_service.update_employee(params[:id], employee_params)
-    redirect_to edit_employee_path(@employee.dig('id'))
+    @employee = @employee_service.update_employee(params[:id], employee_params.to_h)
+    redirect_to employees_path, notice: 'Employee was successfully updated.'
+  rescue StandardError => e
+    flash.now[:alert] = e.message
+    render :edit
   end
 
   private
 
   def initialize_service
     @employee_service ||= EmployeeService.new
+  end
+
+  def employee_params
+    params.require(:employee).permit(:name, :position, :salary, :date_of_birth)
   end
 end
