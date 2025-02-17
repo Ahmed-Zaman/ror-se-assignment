@@ -1,6 +1,11 @@
 <div class="container">
-  <h1>Editing Employee</h1>
+  <h1>Edit Employee</h1>
 
-  <%= render 'form', url: employee_path(@employee["id"]), method: :put, employee: @employee %>
+  <%= render 'form', 
+             employee: @employee,
+             url: employee_path(@employee["id"]),
+             method: :put %>
+
+  <%= link_to 'Back to Employees', employees_path, class: 'btn btn-secondary mt-3' %>
 </div>
 <br>

@@ -9,6 +9,12 @@
       <%= link_to "Show", blog_path(blog), class: "btn btn-sm btn-info" %>
       <% if blog.user == current_user %>
         <%= link_to "Edit", edit_blog_path(blog), class: "btn btn-sm btn-primary" %>
+        <%= link_to "Delete", blog_path(blog), 
+            class: "btn btn-sm btn-danger",
+            data: { 
+              turbo_method: :delete,
+              turbo_confirm: 'Are you sure?'
+            } %>
       <% end %>
     </td>
   </tr>

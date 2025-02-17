@@ -1,23 +1,35 @@
-<%= form_with(url: url, method: method, local: true) do |form| %>
+<%= form_with(url: url, 
+              method: method, 
+              local: true, 
+              class: 'mt-3') do |form| %>
+  
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
   <div class="mb-3">
-    <label for="name" class="form-label">Name</label>
-    <%= form.text_field :name, value: employee&.dig("name"), class: 'form-control' %>
+    <%= form.label :name, class: 'form-label' %>
+    <%= form.text_field :name, name: 'employee[name]', class: 'form-control', value: employee["name"] %>
   </div>
 
   <div class="mb-3">
-    <label for="position" class="form-label">Position</label>
-    <%= form.text_field :position, value: employee&.dig("position"), class: 'form-control' %>
+    <%= form.label :position, class: 'form-label' %>
+    <%= form.text_field :position, name: 'employee[position]', class: 'form-control', value: employee["position"] %>
   </div>
 
   <div class="mb-3">
-    <label for="salary" class="form-label">Salary</label>
-    <%= form.number_field :salary, value: employee&.dig("salary"), class: 'form-control' %>
+    <%= form.label :salary, class: 'form-label' %>
+    <%= form.number_field :salary, name: 'employee[salary]', class: 'form-control', value: employee["salary"] %>
   </div>
 
   <div class="mb-3">
-    <label for="date_of_birth" class="form-label">Date of Birth</label>
-    <%= form.date_field :date_of_birth, value: employee&.dig("date_of_birth"), class: 'form-control' %>
+    <%= form.label :date_of_birth, class: 'form-label' %>
+    <%= form.date_field :date_of_birth, name: 'employee[date_of_birth]', class: 'form-control', value: employee["date_of_birth"] %>
   </div>
 
-  <%= form.submit "Submit", class: 'btn btn-primary' %>
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
 <% end %>
